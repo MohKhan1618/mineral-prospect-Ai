@@ -43,3 +43,9 @@ Open http://localhost:8080/
 PLAN's G5 says "clean-clone Docker run reproduces the result". **Not fully met:** the image was built from this working folder, and
 `models/final` is gitignored, so a fresh clone would not contain the model files. The image runs and serves the saved final model;
 it does not retrain. Reproducing from raw data still needs `scripts/run_pipeline.py` with the downloaded data.
+
+## 11. Gate G5 update (2026-11-23, Phase 13)
+After the model files were committed with Git LFS, I cloned the GitHub repository into an empty folder, ran `docker build -f Dockerfile.serve`,
+started the container and called `/health` (ok, container "healthy") and `/predict/point` at (-108.6, 42.5): logit -1.1445, percentile 0.665,
+identical to the original image and to the Cloud Run service. **G5 is met for the serving image** (clean clone -> Docker -> same result).
+It is **not** a rebuild from raw data: that path (download about 3 GB, convert grids, run the pipeline) has not been tested on a fresh machine.

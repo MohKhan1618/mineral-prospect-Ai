@@ -96,3 +96,6 @@ Kept the dev `Dockerfile`; added `Dockerfile.serve` with only API runtime depend
 
 ## 2026-11-23 - Phase 12: deployed to Cloud Run
 Public, max 2 instances, existing project (new project could not be billed). Cloud Build was denied (service-account storage permission); pushed the locally built image instead, without changing IAM. URL in the phase-12 record.
+
+## 2026-11-23 - Phase 13: wrap-up
+README rewritten; G5 verified for the serving image by a clean clone; second-region test deliberately not done (optional in PLAN). Teaching pass kept separate.

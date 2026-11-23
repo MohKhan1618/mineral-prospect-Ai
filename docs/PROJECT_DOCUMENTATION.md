@@ -43,9 +43,9 @@ layers to rank cells, and we measure honestly how well it does when known occurr
 | 10 | Final model, API and app | Done, with caveats (see record) | [phase-10](phases/phase-10-final-model.md), [model card](MODEL_CARD.md) |
 | 10b | East survey-block step check | Done: step not found, flag withdrawn (see record) | [phase-10b](phases/phase-10b-east-block-check.md) |
 | 10c | Web frontend (Leaflet, areas of interest, evidence panel) | Done, with caveats (see record) | [phase-10c](phases/phase-10c-frontend.md) |
-| 11 | Dockerization | Done locally (332 MB image, runs non-root, healthy) | [phase-11](phases/phase-11-dockerization.md) |
+| 11 | Dockerization | Done (332 MB image, non-root, healthy; clean-clone check passed) | [phase-11](phases/phase-11-dockerization.md) |
 | 12 | GCP deployment | Deployed (public, Cloud Run; trial ends 2026-12-17) | [phase-12](phases/phase-12-gcp-deploy-prep.md) |
-| 13 | Wrap-up | Not started | |
+| 13 | Wrap-up | Done (README, diagram, records); second region not done; teaching pass pending | [phase-13](phases/phase-13-wrap-up.md) |
 
 ## 5. Architecture (current)
 ```

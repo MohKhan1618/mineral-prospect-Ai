@@ -1,6 +1,6 @@
 # Mineral Prospectivity Pilot: Uranium, South Pass - Granite Mountains, Wyoming
 
-**Owner:** Mohsin   **Status:** pilot complete through Phase 10c; Docker (Phase 11) and GCP deployment (Phase 12) next.
+**Owner:** Mohsin   **Status:** all phases complete (0-13); deployed to Google Cloud Run (free-trial account, stops 2026-12-17 unless upgraded). Teaching pass and quizzes still pending.
 **Rule for this file:** every statement must stay true. The "What I can explain" table in section 6 is updated only when a
 lesson quiz has actually been passed.
 
