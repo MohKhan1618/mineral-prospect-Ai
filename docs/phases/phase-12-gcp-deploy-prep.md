@@ -27,3 +27,17 @@ Model files travel with the repo through Git LFS (`models/final/*.npz`), per the
 Scale to zero means no idle cost; cost comes from requests, Cloud Build and Artifact Registry storage (about 0.3 GB).
 Set a budget alert (owner, in Billing). Teardown: `gcloud run services delete mpm-serve`, delete the Artifact Registry repo.
 Memory: the model files total about 97 MB in RAM plus Python; 1 GiB is a guess to confirm from the container's measured memory.
+
+## DEPLOYED 2026-11-23
+- Service `mpm-serve`, project `project-70d1cab1-0a66-4f48-a40`, region `us-central1`, revision `mpm-serve-00001-nwd`,
+  1 CPU, 1 GiB, min 0 / max 2 instances, public (`--allow-unauthenticated`; the organisation did not block it).
+- URL: https://mpm-serve-128504750100.us-central1.run.app
+- Image: `us-central1-docker.pkg.dev/project-70d1cab1-0a66-4f48-a40/mpm/mpm-serve:phase12` (the same image tested locally in Phase 11, retagged and pushed).
+- **Deviation:** Cloud Build failed with a 403 (the default compute service account could not read the build-source bucket). I did not change
+  IAM; I pushed the locally built image to Artifact Registry instead. `cloudbuild.yaml` and `.gcloudignore` therefore remain untested.
+- Smoke test (from this machine): `/health` ok (1.8 s), `/` 200, `/model-info` 200, `/areas` 200, bad input -> 422. `/predict/point` at
+  (-108.6, 42.5) returned logit -1.1445, percentile 0.665, identical to the local container. The first prediction took about 3 s (cold start).
+  Logs show the requests with no errors.
+- Not checked: the page rendered in a browser against the live URL (Leaflet and tiles load from the internet); memory use under load.
+- Trial ends 17 December 2026; the service stops then unless the account is upgraded.
+- Teardown: `gcloud run services delete mpm-serve --region us-central1` and `gcloud artifacts repositories delete mpm --location us-central1`.

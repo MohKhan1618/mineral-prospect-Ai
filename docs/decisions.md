@@ -93,3 +93,6 @@ Every non-obvious choice goes here with the reason, so we never re-argue it.
 
 ## 2026-11-23 - Phase 11: separate slim serving image
 Kept the dev `Dockerfile`; added `Dockerfile.serve` with only API runtime dependencies, non-root user, body-checking healthcheck. Reason: smaller attack surface and faster Cloud Run starts. Not done: auth/rate limit (deferred to Phase 12 decision).
+
+## 2026-11-23 - Phase 12: deployed to Cloud Run
+Public, max 2 instances, existing project (new project could not be billed). Cloud Build was denied (service-account storage permission); pushed the locally built image instead, without changing IAM. URL in the phase-12 record.
