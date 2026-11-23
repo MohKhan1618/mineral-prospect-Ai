@@ -1,0 +1,73 @@
+{
+  "logreg": {
+    "beats_baselines_all": {
+      "prevalence": true,
+      "rule_geology": true,
+      "single_rad_U": false
+    },
+    "beats_baselines_non_producers": {
+      "prevalence": true,
+      "rule_geology": true,
+      "single_rad_U": false
+    },
+    "shuffle_mean_roc_auc": 0.31084114054886164,
+    "shuffle_ok": false,
+    "lodo_share_districts_beating_U_recall5": 0.6666666666666666,
+    "lodo_ok": true,
+    "G4_pass_all_positives": false,
+    "G4_pass_non_producers": false
+  },
+  "rf": {
+    "beats_baselines_all": {
+      "prevalence": true,
+      "rule_geology": true,
+      "single_rad_U": false
+    },
+    "beats_baselines_non_producers": {
+      "prevalence": true,
+      "rule_geology": true,
+      "single_rad_U": false
+    },
+    "shuffle_mean_roc_auc": 0.30803490499405334,
+    "shuffle_ok": false,
+    "lodo_share_districts_beating_U_recall5": 0.3333333333333333,
+    "lodo_ok": false,
+    "G4_pass_all_positives": false,
+    "G4_pass_non_producers": false
+  },
+  "et": {
+    "beats_baselines_all": {
+      "prevalence": true,
+      "rule_geology": true,
+      "single_rad_U": false
+    },
+    "beats_baselines_non_producers": {
+      "prevalence": true,
+      "rule_geology": true,
+      "single_rad_U": false
+    },
+    "shuffle_mean_roc_auc": 0.21037805062119136,
+    "shuffle_ok": false,
+    "lodo_share_districts_beating_U_recall5": 0.3333333333333333,
+    "lodo_ok": false,
+    "G4_pass_all_positives": false,
+    "G4_pass_non_producers": false
+  },
+  "hgb": {
+    "beats_baselines_all": {
+      "prevalence": true,
+      "rule_geology": true,
+      "single_rad_U": false
+    },
+    "beats_baselines_non_producers": {
+      "prevalence": true,
+      "rule_geology": true,
+      "single_rad_U": false
+    },
+    "shuffle_mean_roc_auc": null,
+    "shuffle_ok": null,
+    "lodo_ok": null,
+    "G4_pass_all_positives": false,
+    "G4_pass_non_producers": false
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "block_m": 15000,
+  "block_cells": 300,
+  "n_blocks_with_valid_cells": 59,
+  "n_blocks_with_positives": 26,
+  "n_folds": 5,
+  "n_repeats": 5,
+  "positives": 199,
+  "positives_per_block_top5": [
+    47,
+    40,
+    30,
+    15,
+    12
+  ],
+  "per_repeat": [
+    {
+      "repeat": 0,
+      "positives_per_fold": [
+        47,
+        40,
+        38,
+        37,
+        37
+      ],
+      "min_positives_in_a_fold": 37,
+      "valid_cells_per_fold": [
+        691103,
+        695665,
+        686597,
+        692168,
+        686648
+      ],
+      "share_pos_with_cross_fold_neighbour_within_buffer": 0.21608040201005024
+    },
+    {
+      "repeat": 1,
+      "positives_per_fold": [
+        47,
+        40,
+        38,
+        37,
+        37
+      ],
+      "min_positives_in_a_fold": 37,
+      "valid_cells_per_fold": [
+        688169,
+        689489,
+        693427,
+        688349,
+        692747
+      ],
+      "share_pos_with_cross_fold_neighbour_within_buffer": 0.22110552763819097
+    },
+    {
+      "repeat": 2,
+      "positives_per_fold": [
+        47,
+        40,
+        38,
+        37,
+        37
+      ],
+      "min_positives_in_a_fold": 37,
+      "valid_cells_per_fold": [
+        686752,
+        687169,
+        695659,
+        695580,
+        687021
+      ],
+      "share_pos_with_cross_fold_neighbour_within_buffer": 0.23115577889447236
+    },
+    {
+      "repeat": 3,
+      "positives_per_fold": [
+        47,
+        40,
+        38,
+        37,
+        37
+      ],
+      "min_positives_in_a_fold": 37,
+      "valid_cells_per_fold": [
+        688169,
+        691005,
+        692793,
+        689031,
+        691183
+      ],
+      "share_pos_with_cross_fold_neighbour_within_buffer": 0.22110552763819097
+    },
+    {
+      "repeat": 4,
+      "positives_per_fold": [
+        47,
+        40,
+        37,
+        38,
+        37
+      ],
+      "min_positives_in_a_fold": 37,
+      "valid_cells_per_fold": [
+        688127,
+        694683,
+        687268,
+        686772,
+        695331
+      ],
+      "share_pos_with_cross_fold_neighbour_within_buffer": 0.23115577889447236
+    }
+  ]
+}

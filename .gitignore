@@ -1,0 +1,20 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.state/
+*.tmp
+
+# Big data and models stay out of git (tracked via manifest/checksums instead)
+data/raw/*
+data/interim/*
+data/processed/*
+data/features/*
+data/splits/*
+models/*
+!**/.gitkeep
+
+# Secrets / credentials: never commit
+.env
+*.json.key
+gcp-*.json

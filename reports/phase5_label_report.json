@@ -1,0 +1,27 @@
+{
+  "records_in_footprint": 260,
+  "records_on_valid_cells": 257,
+  "records_dropped_off_mask": 3,
+  "positive_cells": 199,
+  "cells_with_multiple_records": 32,
+  "producer_cells": 98,
+  "non_producer_cells": 101,
+  "by_dev_stat": {
+    "Past Producer": 79,
+    "Occurrence": 44,
+    "Prospect": 34,
+    "Unknown": 23,
+    "Producer": 19
+  },
+  "by_best_score": {
+    "D": 173,
+    "C": 17,
+    "E": 6,
+    "B": 3
+  },
+  "buffer_m": 2000,
+  "valid_cells": 3452181,
+  "excluded_cells": 360961,
+  "background_cells": 3091021,
+  "prevalence_of_positives": 5.764471793338762e-05
+}

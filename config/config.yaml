@@ -1,0 +1,67 @@
+# Single place for all settings. Change a value here and only the stages that
+# depend on it re-run (their fingerprint changes).
+project:
+  name: mineral-exploration-using-ai
+  seed: 42
+
+paths:
+  raw: data/raw
+  interim: data/interim
+  processed: data/processed
+  features: data/features
+  splits: data/splits
+  models: models
+  reports: reports
+  state: .state
+
+# Filled in during Phase 1 (region choice) and Phase 4 (master grid).
+study_area:
+  name: south_pass_granite_mtns   # fixed in Phase 4: the survey footprint
+  bbox_wgs84: [-109.158, 42.010, -106.703, 42.839]
+grid:
+  crs: EPSG:32613         # master grid = the survey grid (UTM 13N, meters)
+  cell_size_m: 50
+
+# Phase 1 candidate areas, [min_lon, min_lat, max_lon, max_lat] in WGS84.
+# APPROXIMATE boxes drawn from memory of the Wyoming Earth MRI survey locations;
+# replace with the real survey extents once the data releases are read (Phase 2).
+candidate_areas:
+  south_pass_granite_mtns: [-109.6, 42.0, -107.4, 43.0]
+  shirley_mtns_hartville: [-107.3, 42.0, -104.5, 43.0]
+  sierra_madre_medicine_bow: [-107.6, 41.0, -105.4, 42.0]
+
+# Phase 5: labels and spatial cross-validation.
+labels:
+  buffer_m: 2000          # cells this close to a positive are excluded from unlabeled background
+splits:
+  block_m: 15000          # square block side; whole blocks go to one fold (chosen in Phase 5, see phase record)
+  n_folds: 5
+  n_repeats: 5            # different block-to-fold assignments, results are reported across them
+
+# Phase 7: training under buffered spatial block CV.
+training:
+  background_sample: 40000   # unlabeled cells sampled per fold for training (all training positives are used)
+  repeats: 3                 # of the 5 frozen split repeats (they differ little, see Phase 5 red flag 2)
+  top_fracs: [0.01, 0.05]
+  models: [prevalence, rule_geology, single_rad_U, logreg, rf, et, hgb]
+
+# Phase 8: evaluation (rules in docs/phases/phase-08-decision-rule.md).
+evaluation:
+  seed: 42
+  n_boot: 2000
+  district_link_m: 12000     # positives closer than this (single linkage) form one district
+  min_district_pos: 10       # only districts with at least this many positives are held out
+  learning_fracs: [0.25, 0.5, 0.75, 1.0]
+  n_shuffles: 2
+
+# Phase 9: interpretation (rules in docs/phases/phase-09-decision-rule.md).
+interpretation:
+  repeat: 0                  # frozen split repeat used for the quantitative tables
+  n_perm: 3                  # permutations per feature / group
+  n_unl_sample: 200000       # unlabeled test cells scored in permutation importance
+  calib_unl_sample: 600000   # unlabeled cells used to fit the Platt map (weighted)
+
+# Phase 1 gate: minimum positives needed before we commit to a region.
+gate:
+  min_positives_total: 100
+  min_positives_per_fold: 20

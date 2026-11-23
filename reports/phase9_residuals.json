@@ -1,0 +1,15 @@
+{
+  "moran": {
+    "I": 0.5236593349917377,
+    "expected_I": -0.005050505050505051,
+    "p_one_sided": 0.001,
+    "n": 199
+  },
+  "positives_below_50th_percentile": 21,
+  "n_pos": 199,
+  "share_below_50th": 0.10552763819095477,
+  "edge_flag": false,
+  "edge_zone_top5_over_expected": 1.9299238620387444,
+  "edge_mean_pct_minus_interior": -0.038531512495187326,
+  "cover_area_share": 0.10510543914122696
+}

@@ -1,0 +1,82 @@
+{
+  "aligned_layers": [
+    "U_FIN",
+    "TH_FIN",
+    "K_FIN",
+    "TC_FIN",
+    "RTP",
+    "Mag_IGRF",
+    "VD",
+    "dem",
+    "geology_class",
+    "geology_unit",
+    "master_mask"
+  ],
+  "mask_cells": 3452181,
+  "layers": {
+    "U_FIN": {
+      "nan_inside_mask": 0,
+      "valid_outside_mask": 0,
+      "min": 0.0,
+      "max": 70.8091812133789,
+      "mean": 17.169406020049887
+    },
+    "TH_FIN": {
+      "nan_inside_mask": 0,
+      "valid_outside_mask": 0,
+      "min": 0.0,
+      "max": 138.15240478515625,
+      "mean": 29.775653143800483
+    },
+    "K_FIN": {
+      "nan_inside_mask": 0,
+      "valid_outside_mask": 0,
+      "min": 0.0,
+      "max": 173.72940063476562,
+      "mean": 85.82771966343113
+    },
+    "TC_FIN": {
+      "nan_inside_mask": 0,
+      "valid_outside_mask": 0,
+      "min": 0.0,
+      "max": 3336.056396484375,
+      "mean": 1091.5605103177197
+    },
+    "RTP": {
+      "nan_inside_mask": 0,
+      "valid_outside_mask": 0,
+      "min": -1110.488037109375,
+      "max": 4533.2099609375,
+      "mean": 21.33225774581265
+    },
+    "Mag_IGRF": {
+      "nan_inside_mask": 0,
+      "valid_outside_mask": 0,
+      "min": -412.470947265625,
+      "max": 4495.69287109375,
+      "mean": 37.90576146776227
+    },
+    "VD": {
+      "nan_inside_mask": 0,
+      "valid_outside_mask": 0,
+      "min": -4.144622325897217,
+      "max": 5.876100540161133,
+      "mean": -0.005353229522038136
+    },
+    "dem": {
+      "nan_inside_mask": 0,
+      "valid_outside_mask": 3351921,
+      "min": 1746.2738037109375,
+      "max": 3170.814697265625,
+      "mean": 2125.7065653544655
+    },
+    "geology_class": {
+      "unmapped_fraction_inside_mask": 0.0,
+      "n_distinct_codes_inside_mask": 13
+    },
+    "geology_unit": {
+      "unmapped_fraction_inside_mask": 0.0,
+      "n_distinct_codes_inside_mask": 66
+    }
+  }
+}

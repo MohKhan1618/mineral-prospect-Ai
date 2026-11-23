@@ -1,0 +1,4 @@
+area,bbox,records,unique_locations,producers_past_or_present,passes_total_gate
+south_pass_granite_mtns,"[-109.6, 42.0, -107.4, 43.0]",696,535,315,True
+shirley_mtns_hartville,"[-107.3, 42.0, -104.5, 43.0]",234,220,43,True
+sierra_madre_medicine_bow,"[-107.6, 41.0, -105.4, 42.0]",96,94,17,False

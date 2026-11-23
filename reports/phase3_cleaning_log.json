@@ -1,0 +1,61 @@
+{
+  "common_valid_cells": 3452181,
+  "dropped_vs_each_layer": {
+    "U_FIN": 807,
+    "TH_FIN": 807,
+    "K_FIN": 807,
+    "TC_FIN": 807,
+    "RTP": 815,
+    "Mag_IGRF": 815,
+    "VD": 1168
+  },
+  "layers": {
+    "U_FIN": {
+      "n_cells": 3452181,
+      "n_negative_set_to_zero": 1638,
+      "cap_high": 70.8091812133789,
+      "n_capped_high": 3453
+    },
+    "TH_FIN": {
+      "n_cells": 3452181,
+      "n_negative_set_to_zero": 1933,
+      "cap_high": 138.15240478515625,
+      "n_capped_high": 3453
+    },
+    "K_FIN": {
+      "n_cells": 3452181,
+      "n_negative_set_to_zero": 134,
+      "cap_high": 173.72940063476562,
+      "n_capped_high": 3453
+    },
+    "TC_FIN": {
+      "n_cells": 3452181,
+      "n_negative_set_to_zero": 127,
+      "cap_high": 3336.056396484375,
+      "n_capped_high": 3453
+    },
+    "RTP": {
+      "n_cells": 3452181,
+      "median_subtracted": 52382.703125,
+      "cap_low": -1110.488046875,
+      "cap_high": 4533.209921875125,
+      "n_capped_low": 3453,
+      "n_capped_high": 3453
+    },
+    "Mag_IGRF": {
+      "n_cells": 3452181,
+      "median_subtracted": 52391.22265625,
+      "cap_low": -412.4709375,
+      "cap_high": 4495.692890625593,
+      "n_capped_low": 3453,
+      "n_capped_high": 3453
+    },
+    "VD": {
+      "n_cells": 3452181,
+      "cap_low": -4.144622440338135,
+      "cap_high": 5.876100454330793,
+      "n_capped_low": 3453,
+      "n_capped_high": 3453
+    }
+  }
+}

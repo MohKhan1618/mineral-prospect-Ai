@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mineral Prospectivity Map</title>
+  <meta name="description" content="Pilot map of areas whose radiometric surroundings resemble known uranium occurrences, South Pass - Granite Mountains, Wyoming.">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <div>
+      <h1>Mineral prospectivity pilot</h1>
+      <p class="sub">South Pass &ndash; Granite Mountains, Wyoming &middot; ranks areas by how closely their radiometric surroundings resemble known occurrences</p>
+    </div>
+    <button id="btn-about" class="ghost" type="button">Limits &amp; method</button>
+  </header>
+
+  <div id="banner" class="banner" role="note">
+    <strong>Pilot, not for decisions.</strong>
+    The model does not clearly beat simply reading the raw uranium map (validation gate G4 was not met). Highlighted areas are a
+    <em>ranking</em> of radiometric context, not the probability of a deposit.
+  </div>
+
+  <main class="layout">
+    <section class="mapwrap" aria-label="Map">
+      <div id="map" role="application" aria-label="Interactive map. Click anywhere inside the survey to see the evidence for that spot."></div>
+      <div id="map-status" class="map-status" role="status">Loading map&hellip;</div>
+    </section>
+
+    <aside class="panel" aria-label="Details">
+      <div class="tabs" role="tablist">
+        <button role="tab" id="t-areas" aria-controls="p-areas" aria-selected="true" type="button">Areas of interest</button>
+        <button role="tab" id="t-point" aria-controls="p-point" aria-selected="false" type="button">Selected point</button>
+        <button role="tab" id="t-about" aria-controls="p-about" aria-selected="false" type="button">Limits &amp; method</button>
+      </div>
+
+      <div id="p-areas" role="tabpanel" aria-labelledby="t-areas" class="tabpanel">
+        <p class="hint">Clusters of the top&nbsp;5&nbsp;% of the study area, strongest first. Select one to zoom to it.</p>
+        <label class="check"><input type="checkbox" id="only-new"> Only areas with no known occurrence inside</label>
+        <ol id="area-list" class="area-list"></ol>
+      </div>
+
+      <div id="p-point" role="tabpanel" aria-labelledby="t-point" class="tabpanel" hidden>
+        <div id="point-empty" class="empty">
+          <p><strong>Click anywhere on the map</strong> inside the surveyed area to see how the model scored that spot and the evidence behind it.</p>
+        </div>
+        <div id="point-body" hidden></div>
+      </div>
+
+      <div id="p-about" role="tabpanel" aria-labelledby="t-about" class="tabpanel" hidden>
+        <div id="about-body"><p class="hint">Loading&hellip;</p></div>
+      </div>
+    </aside>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

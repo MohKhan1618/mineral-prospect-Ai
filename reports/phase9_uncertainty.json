@@ -1,0 +1,10 @@
+{
+  "uncertainty_mean": 0.08842109713097242,
+  "uncertainty_p95": 0.1777530273148355,
+  "uncertainty_family_mean": 0.1202141746903274,
+  "uncertainty_repeat_mean": 0.05662801957161744,
+  "spearman_uncertainty_vs_score": -0.24710559426392562,
+  "mean_uncertainty_top5pct_cells": 0.04095543124797525,
+  "recall5_gap_low_minus_high_uncertainty": 0.9104477611940298,
+  "informative_by_rule": true
+}

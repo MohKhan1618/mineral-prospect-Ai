@@ -1,0 +1,28 @@
+{
+  "groups_used_drop_recall5_ge_0.03": [
+    "neighbourhood"
+  ],
+  "group_drops": {
+    "neighbourhood": 0.5142378559463986,
+    "structure": 0.005025125628140704,
+    "magnetic": 0.0033500837520938024,
+    "terrain": -0.010050251256281407,
+    "geology": -0.011725293132328308,
+    "radiometric": -0.011725293132328308
+  },
+  "possible_location_proxy_used": {
+    "mag_IGRF": false,
+    "ter_elev": false,
+    "mag_RTP_mean_5km": false
+  },
+  "calibration_pass": true,
+  "brier_skill_score": 0.000896382743730384,
+  "uncertainty_informative": true,
+  "survey_edge_flag": false,
+  "stripe_flag_score_map": false,
+  "stripe_ratio_score_map": 5.444890511789865,
+  "stripe_ratio_raw_uranium": 20.359092073233146,
+  "moran_I_of_positive_percentiles": 0.5236593349917377,
+  "moran_p": 0.001,
+  "roads_tested": false
+}

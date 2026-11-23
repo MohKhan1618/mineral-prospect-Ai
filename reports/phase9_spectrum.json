@@ -1,0 +1,23 @@
+{
+  "score_map": {
+    "flight_line_band_150_260m": {
+      "peak_to_median": 5.444890511789865,
+      "peak_direction_deg_from_x_axis": 92.5
+    },
+    "control_band_400_700m": {
+      "peak_to_median": 3.2264725021410707,
+      "peak_direction_deg_from_x_axis": 92.5
+    }
+  },
+  "raw_log_uranium": {
+    "flight_line_band_150_260m": {
+      "peak_to_median": 20.359092073233146,
+      "peak_direction_deg_from_x_axis": 92.5
+    },
+    "control_band_400_700m": {
+      "peak_to_median": 1.7121645903126381,
+      "peak_direction_deg_from_x_axis": 92.5
+    }
+  },
+  "flag_stripes_in_score_map": false
+}

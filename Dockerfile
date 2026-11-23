@@ -1,0 +1,15 @@
+# Dev image, grows with the project. Phase 11 turns this into a slim multi-stage image.
+FROM python:3.13-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY config ./config
+COPY src ./src
+COPY scripts ./scripts
+COPY tests ./tests
+
+CMD ["python", "scripts/run_pipeline.py"]

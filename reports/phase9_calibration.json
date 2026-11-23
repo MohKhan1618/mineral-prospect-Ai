@@ -1,0 +1,15 @@
+{
+  "brier": 5.758974250710472e-05,
+  "brier_constant_prevalence": 5.764141127349454e-05,
+  "brier_skill_score": 0.000896382743730384,
+  "prevalence": 5.764471793338762e-05,
+  "adjacent_bin_pairs_in_order_of_6": 6,
+  "calibration_pass": true,
+  "platt_all_data": {
+    "slope": 0.6534583171866362,
+    "intercept": -9.03828113623448,
+    "z_mean": -1.7581584704715685,
+    "z_sd": 2.117716346483365
+  },
+  "note": "calibrated value = P(cell is a LABELLED positive); lower bound on true prospectivity"
+}
