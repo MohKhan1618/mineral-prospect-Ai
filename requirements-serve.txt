@@ -1,0 +1,6 @@
+# Runtime dependencies of the web app only (Phase 11). Training/dev tools stay in requirements.txt.
+numpy==2.5.5
+pyproj==3.8.0
+fastapi==0.165.0
+uvicorn==0.54.0
+pydantic==2.14.4

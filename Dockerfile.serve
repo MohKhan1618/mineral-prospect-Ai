@@ -1,0 +1,19 @@
+# Phase 11: slim serving image. Contains only the API, web page and final model files.
+FROM python:3.13-slim AS builder
+ENV PIP_NO_CACHE_DIR=1
+COPY requirements-serve.txt .
+RUN pip install --prefix=/install -r requirements-serve.txt
+
+FROM python:3.13-slim
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PORT=8080
+RUN useradd --create-home --uid 10001 app
+WORKDIR /app
+COPY --from=builder /install /usr/local
+COPY src/mpm ./src/mpm
+COPY web ./web
+COPY models/final ./models/final
+ENV PYTHONPATH=/app/src
+USER app
+EXPOSE 8080
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s CMD python -c "import urllib.request,sys; sys.exit(0 if b'\"ok\"' in urllib.request.urlopen('http://127.0.0.1:8080/health').read() else 1)"
+CMD ["sh","-c","uvicorn mpm.api:app --host 0.0.0.0 --port ${PORT}"]

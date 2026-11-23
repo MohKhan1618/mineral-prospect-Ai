@@ -12,6 +12,7 @@ data/processed/*
 data/features/*
 data/splits/*
 models/*
+!models/final/
 !**/.gitkeep
 
 # Secrets / credentials: never commit

@@ -90,3 +90,6 @@ Every non-obvious choice goes here with the reason, so we never re-argue it.
 - **Evidence, model drivers, textbook guide and cautions are shown as four separate blocks.** The model supplies no geological reasoning; the guide is labelled as general knowledge, unreviewed by a geologist.
 - **Hot-spot polygons precomputed and reprojected (GeoJSON), not an image overlay** (UTM grid convergence would shift an image by kilometres).
 - **Areas of interest = clusters of the top 5 %, ranked by top-1 % cell count then area;** each states whether known occurrences lie inside (partly in-sample) or not (candidate, uncheckable).
+
+## 2026-11-23 - Phase 11: separate slim serving image
+Kept the dev `Dockerfile`; added `Dockerfile.serve` with only API runtime dependencies, non-root user, body-checking healthcheck. Reason: smaller attack surface and faster Cloud Run starts. Not done: auth/rate limit (deferred to Phase 12 decision).

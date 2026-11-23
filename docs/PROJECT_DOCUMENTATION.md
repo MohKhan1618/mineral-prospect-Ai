@@ -23,6 +23,7 @@ layers to rank cells, and we measure honestly how well it does when known occurr
 | `docs/data_inspection_journal.md` | Who inspected what, with which tool, and what it showed |
 | `docs/data_catalog.md` | (Phase 1) every dataset: source, license, format, resolution |
 | `docs/model_card.md` | (Phase 10) model purpose, data, metrics, limits |
+| `docs/PROJECT_OVERVIEW.md` | Owner-voice overview: what I did, how it was built with AI assistance, results, what I can currently explain |
 | `docs/FRONTEND_GUIDE.md` | (Phase 10c) plain-language tour of the web page, capabilities and limits, 5-minute demo script, likely questions |
 | `reports/` | Generated validation, evaluation reports and figures |
 
@@ -42,7 +43,7 @@ layers to rank cells, and we measure honestly how well it does when known occurr
 | 10 | Final model, API and app | Done, with caveats (see record) | [phase-10](phases/phase-10-final-model.md), [model card](MODEL_CARD.md) |
 | 10b | East survey-block step check | Done: step not found, flag withdrawn (see record) | [phase-10b](phases/phase-10b-east-block-check.md) |
 | 10c | Web frontend (Leaflet, areas of interest, evidence panel) | Done, with caveats (see record) | [phase-10c](phases/phase-10c-frontend.md) |
-| 11 | Dockerization | Not started | |
+| 11 | Dockerization | Done locally (332 MB image, runs non-root, healthy) | [phase-11](phases/phase-11-dockerization.md) |
 | 12 | GCP deployment | Not started | |
 | 13 | Wrap-up | Not started | |
 

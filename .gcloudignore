@@ -1,0 +1,13 @@
+# Cloud Build upload: keep it to what Dockerfile.serve copies. (gcloud otherwise falls back to .gitignore.)
+.git
+.venv
+__pycache__
+.pytest_cache
+.state
+data
+reports
+notebooks
+.env
+models/*
+!models/final
+!models/final/*

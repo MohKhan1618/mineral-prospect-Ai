@@ -4,7 +4,9 @@ __pycache__
 .pytest_cache
 .state
 data
-models
 reports
 notebooks
 .env
+models/*
+!models/final
+models/final/logreg_final.joblib

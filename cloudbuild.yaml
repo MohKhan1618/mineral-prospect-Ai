@@ -1,0 +1,5 @@
+# Used by: gcloud builds submit --config cloudbuild.yaml --substitutions _IMAGE=<registry path>
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args: ["build", "-f", "Dockerfile.serve", "-t", "${_IMAGE}", "."]
+images: ["${_IMAGE}"]
