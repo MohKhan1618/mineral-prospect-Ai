@@ -32,6 +32,49 @@ const pctText = (x) => (x * 100).toFixed(0) + "%";
 const sci = (x) => Number(x).toExponential(1).replace("e-", " x 10^-").replace("e+", " x 10^");
 function tierOf(p) { return p >= 0.99 ? ["t1", "Top 1 %"] : p >= 0.95 ? ["t5", "Top 5 %"] : p >= 0.90 ? ["t10", "Top 10 %"] : ["t0", "Below the top 10 %"]; }
 
+
+/* ---------- units and coordinates ----------
+ * The survey grids are counts per second (cps). Geologists usually think in ppm (eU, eTh) and % (eK). These are rough
+ * conversions with the survey sensitivities (contractor report Table 6-16), NOT calibrated concentrations.
+ * Keep in step with SENS_* in src/mpm/serve.py (a test checks this). */
+const SENS = { U: 10.4, Th: 6.2, K: 99.5 };
+const ppmU = (cps) => cps / SENS.U;
+const ppmTh = (cps) => cps / SENS.Th;
+const pctK = (cps) => cps / SENS.K;
+const f1 = (x) => Number(x).toFixed(1);
+const f2 = (x) => Number(x).toFixed(2);
+
+/* UTM zone 13N (EPSG:32613, the project grid), WGS84, Krueger series; well under a metre in this zone. */
+function toUTM13(lat, lon) {
+  const a = 6378137.0, f = 1 / 298.257223563, k0 = 0.9996, lon0 = -105 * Math.PI / 180;
+  const n = f / (2 - f), n2 = n * n, n3 = n2 * n, n4 = n3 * n;
+  const A = a / (1 + n) * (1 + n2 / 4 + n4 / 64);
+  const alpha = [n / 2 - 2 * n2 / 3 + 5 * n3 / 16, 13 * n2 / 48 - 3 * n3 / 5, 61 * n3 / 240];
+  const phi = lat * Math.PI / 180, lam = lon * Math.PI / 180 - lon0;
+  const e = Math.sqrt(f * (2 - f));
+  const t = Math.sinh(Math.atanh(Math.sin(phi)) - e * Math.atanh(e * Math.sin(phi)));
+  const xi = Math.atan2(t, Math.cos(lam));
+  const eta = Math.atanh(Math.sin(lam) / Math.sqrt(1 + t * t));
+  let E = eta, N = xi;
+  alpha.forEach((al, i) => { const j = i + 1; E += al * Math.cos(2 * j * xi) * Math.sinh(2 * j * eta); N += al * Math.sin(2 * j * xi) * Math.cosh(2 * j * eta); });
+  return { e: 500000 + k0 * A * E, n: k0 * A * N };
+}
+const fmtLL = (lat, lon) => `${lat.toFixed(5)}, ${lon.toFixed(5)}`;
+function fmtUTM(lat, lon) { const u = toUTM13(lat, lon); return `UTM 13N  E ${Math.round(u.e)}  N ${Math.round(u.n)}`; }
+async function copyText(text, btn) {
+  try { await navigator.clipboard.writeText(text); btn.textContent = "Copied"; }
+  catch (_) { btn.textContent = "Copy failed"; }
+  setTimeout(() => { btn.textContent = "Copy"; }, 1500);
+}
+/* A labelled coordinate line "label  lat, lon  [Copy]" plus the UTM line. Text only (no HTML). */
+function coordBlock(label, lat, lon) {
+  const btn = el("button", { class: "copy", type: "button", text: "Copy", title: "Copy as latitude, longitude (paste into Google Maps or a GPS)" });
+  btn.addEventListener("click", (ev) => { ev.stopPropagation(); copyText(fmtLL(lat, lon), btn); });
+  return el("div", { class: "coord" },
+    el("span", { class: "clabel", text: label }), " ", el("span", { class: "cval", text: fmtLL(lat, lon) }), " ", btn,
+    el("div", { class: "cutm", text: fmtUTM(lat, lon) }));
+}
+
 async function getJSON(url, opts) {
   const r = await fetch(url, opts);
   if (!r.ok) { const e = new Error(`${r.status}`); e.status = r.status; try { e.detail = (await r.json()).detail; } catch (_) {} throw e; }
@@ -79,6 +122,10 @@ function initMap() {
     return d;
   };
   legend.addTo(map);
+  const readout = L.control({ position: "bottomright" });
+  readout.onAdd = () => { const d = L.DomUtil.create("div", "cursor-readout"); d.textContent = "Move the cursor over the map for coordinates"; state.readout = d; return d; };
+  readout.addTo(map);
+  map.on("mousemove", (e) => { state.readout.textContent = `${fmtLL(e.latlng.lat, e.latlng.lng)}   ${fmtUTM(e.latlng.lat, e.latlng.lng)}`; });
   map.on("click", (e) => queryPoint(e.latlng));
   if (window.ResizeObserver) new ResizeObserver(() => map.invalidateSize()).observe($("#map"));
 }
@@ -90,11 +137,18 @@ function addTiers(data) {
   }
 }
 
+function areaUnits(a) {
+  return `eU ${a.mean_eU} cps (about ${f1(ppmU(a.mean_eU))} ppm), eTh ${a.mean_eTh} cps (about ${f1(ppmTh(a.mean_eTh))} ppm), ` +
+    `eK ${a.mean_eK} cps (about ${f2(pctK(a.mean_eK))} %); U/Th about ${f2(ppmU(a.mean_eU) / Math.max(ppmTh(a.mean_eTh), 0.1))} in ppm terms`;
+}
+
 function areaPopup(a) {
   const root = el("div");
   root.append(el("h4", { text: `${a.name}: ${a.area_km2} km² in the top 5 %` }));
   root.append(el("div", { class: "pm", text: `Peak score: top ${fmtTop(a.max_percentile)} % of the study area` }));
-  root.append(el("div", { text: `eU ${a.mean_eU}, eTh ${a.mean_eTh}, eK ${a.mean_eK} cps (average)` }));
+  root.append(el("div", { text: `Average: ${areaUnits(a)}` }));
+  root.append(coordBlock("Peak cell", a.peak.lat, a.peak.lon));
+  root.append(coordBlock("Centre", a.centre.lat, a.centre.lon));
   root.append(el("div", { text: `${a.main_rock_class}` }));
   root.append(el("div", { text: `Main driver: ${a.main_driver_group}` }));
   root.append(el("div", { text: a.known_occurrences_inside > 0
@@ -133,7 +187,8 @@ function renderAreas() {
       el("div", {},
         el("div", {}, el("strong", { text: a.name }), " ", badge),
         el("div", { class: "meta", text: `${a.area_km2} km² · peak top ${fmtTop(a.max_percentile)} % · ${a.main_rock_class}` }),
-        el("div", { class: "meta", text: `eU ${a.mean_eU} · eTh ${a.mean_eTh} · eK ${a.mean_eK} cps · driver: ${a.main_driver_group}` }),
+        el("div", { class: "meta", text: `Average ${areaUnits(a)} · driver: ${a.main_driver_group}` }),
+        el("div", { class: "meta mono", text: `Peak ${fmtLL(a.peak.lat, a.peak.lon)} · ${fmtUTM(a.peak.lat, a.peak.lon)}` }),
         a.known_occurrences_inside === 0
           ? el("div", { class: "meta", text: "Candidate: nothing here can be checked against labels." })
           : el("div", { class: "meta", text: "Partly in-sample: the model was trained on the known occurrences here." })));
@@ -193,6 +248,7 @@ function renderPoint(o) {
     el("span", { text: `${sci(o.labelled_positive_density)} known-occurrence cells per cell (${o.lift_vs_average_cell.toFixed(1)}x the average cell)` }),
     el("span", { class: "hint", text: "Model disagreement" }),
     el("span", { text: `${o.uncertainty.level} (descriptive only)` })));
+  body.append(coordBlock("Cell centre", o.cell_centre.lat, o.cell_centre.lon));
   body.append(el("p", { class: "hint", text: "The observed rate is from out-of-fold validation: the share of known occurrence cells found in cells with this score. It is a lower bound, not the probability of a deposit." }));
 
   const ev = o.evidence;
@@ -200,12 +256,13 @@ function renderPoint(o) {
     const g = el("div", { class: "group measured" }, el("h3", { text: GROUP_TITLES.measured[0] }), el("div", { class: "why", text: GROUP_TITLES.measured[1] }));
     const sp = ev.survey_percentile;
     g.append(el("div", { class: "bars" },
-      barRow("Uranium (eU)", sp.eU, `${ev.eU_cps} cps`),
-      barRow("U, 5 km mean", sp.mean_eU_5km, `${ev.mean_eU_5km_cps} cps`),
-      barRow("Thorium (eTh)", sp.eTh, `${ev.eTh_cps} cps`),
-      barRow("Potassium (eK)", sp.eK, `${ev.eK_cps} cps`),
-      barRow("U / Th ratio", sp.u_over_th, `${ev.u_over_th}`)));
+      barRow("Uranium (eU)", sp.eU, `${ev.eU_cps} cps ≈ ${f1(ppmU(ev.eU_cps))} ppm`),
+      barRow("U, 5 km mean", sp.mean_eU_5km, `${ev.mean_eU_5km_cps} cps ≈ ${f1(ppmU(ev.mean_eU_5km_cps))} ppm`),
+      barRow("Thorium (eTh)", sp.eTh, `${ev.eTh_cps} cps ≈ ${f1(ppmTh(ev.eTh_cps))} ppm`),
+      barRow("Potassium (eK)", sp.eK, `${ev.eK_cps} cps ≈ ${f2(pctK(ev.eK_cps))} %`),
+      barRow("U / Th ratio", sp.u_over_th, `${ev.u_over_th} (cps) ≈ ${f2(ev.approx_concentration.u_over_th_ppm)} (ppm)`)));
     g.append(el("div", { class: "hint", text: "Bar = share of the whole survey that is lower than this cell. The vertical line is the survey median." }));
+    g.append(el("div", { class: "hint", text: "The survey grids are in counts per second (cps). ppm and % values are approximate conversions with the survey sensitivities (U 10.4 cps/ppm, Th 6.2 cps/ppm, K 99.5 cps/%), not calibrated concentrations. For orientation, crustal averages are about 2.7 ppm U, 10 ppm Th, 2.3 % K, and U/Th about 0.27 (ppm basis)." }));
     for (const r of o.reading.filter((x) => x.kind === "measured")) g.append(item(r));
     body.append(g);
   }
@@ -230,7 +287,7 @@ function renderPoint(o) {
     body.append(g);
   }
   body.append(el("p", { class: "hint", text: o.disclaimer }));
-  body.append(el("p", { class: "hint", text: `Cell centre ${o.cell_centre.lat.toFixed(4)}, ${o.cell_centre.lon.toFixed(4)} (50 m cell). Distance to survey edge ${o.distance_to_survey_edge_km.toFixed(1)} km.` }));
+  body.append(el("p", { class: "hint", text: `Distance to survey edge ${o.distance_to_survey_edge_km.toFixed(1)} km. Cell size 50 m.` }));
   $("#p-point").scrollTop = 0;
 }
 function item(r) { return el("div", { class: "item" }, el("b", { text: r.title }), el("span", { text: r.text })); }

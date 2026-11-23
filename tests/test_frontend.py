@@ -20,6 +20,7 @@ built = pytest.mark.skipif(not (FINAL / "hotspots.json").exists(), reason="front
 def _ev(u, th, k, nbr, ratio, fault=5.0, cls="Sedimentary, undifferentiated"):
     sp = {"eU": u, "eTh": th, "eK": k, "mean_eU_5km": nbr, "u_over_th": ratio}
     return {"eU_cps": 30.0, "eTh_cps": 30.0, "eK_cps": 90.0, "mean_eU_5km_cps": 20.0, "u_over_th": 1.0,
+            "approx_concentration": {"eU_ppm": 2.9, "eTh_ppm": 4.8, "eK_pct": 0.9, "u_over_th_ppm": 0.6},
             "distance_to_fault_km": fault, "elevation_m": 2000, "rock_class": cls, "rock_unit": "u",
             "survey_percentile": sp, "survey_median": {"eU": 15.0, "eTh": 25.0, "eK": 84.0, "u_over_th": 0.6}}
 
@@ -117,3 +118,31 @@ def test_real_point_has_evidence_and_site_serves_end_to_end():
     page = c.get("/")
     if (ROOT / "web" / "index.html").exists():
         assert "Mineral Prospectivity Map" in page.text and c.get("/app.js").status_code == 200
+
+
+def test_js_unit_constants_match_python():
+    """The page converts cps to ppm / % with constants copied from serve.py; they must not drift apart."""
+    import re
+    from mpm import serve
+    js = (ROOT / "web" / "app.js").read_text(encoding="utf-8")
+    m = re.search(r"const SENS = \{ U: ([\d.]+), Th: ([\d.]+), K: ([\d.]+) \}", js)
+    assert m, "SENS constants not found in web/app.js"
+    assert (float(m[1]), float(m[2]), float(m[3])) == (serve.SENS_U_CPS_PER_PPM, serve.SENS_TH_CPS_PER_PPM, serve.SENS_K_CPS_PER_PCT)
+
+
+def test_reading_text_shows_ppm_and_percent(tmp_path):
+    s = Store(_fake_dir(tmp_path)[0])
+    ev = _ev(0.95, 0.5, 0.5, 0.5, 0.8)
+    ev["approx_concentration"] = {"eU_ppm": 2.9, "eTh_ppm": 4.8, "eK_pct": 0.9, "u_over_th_ppm": 0.6}
+    text = " ".join(r["text"] for r in s.reading(s.cell_report(0), ev, None) if r["kind"] == "measured")
+    assert "about 2.9 ppm" in text and "about 4.8 ppm" in text and "about 0.9 %" in text and "in ppm terms" in text
+
+
+@built
+def test_real_evidence_has_consistent_approx_concentration():
+    from mpm import serve
+    s = Store(FINAL)
+    ev = s.evidence(0)
+    ac = ev["approx_concentration"]
+    assert abs(ac["eU_ppm"] - ev["eU_cps"] / serve.SENS_U_CPS_PER_PPM) < 0.06
+    assert abs(ac["eK_pct"] - ev["eK_cps"] / serve.SENS_K_CPS_PER_PCT) < 0.006

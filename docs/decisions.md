@@ -99,3 +99,6 @@ Public, max 2 instances, existing project (new project could not be billed). Clo
 
 ## 2026-11-23 - Phase 13: wrap-up
 README rewritten; G5 verified for the serving image by a clean clone; second-region test deliberately not done (optional in PLAN). Teaching pass kept separate.
+
+## 2026-11-23 - Frontend: coordinates and approximate ppm/%
+Added lat/lon + UTM 13N with copy button and cursor readout; show approximate ppm (eU, eTh) and % (eK) next to cps, labelled approximate. Reason: geologists need locations and conventional units. Model unchanged. Redeploy pending owner OK.

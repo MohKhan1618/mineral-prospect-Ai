@@ -116,3 +116,17 @@ ul.tight { margin: 4px 0 8px 18px; padding: 0; } ul.tight li { margin: 3px 0; fo
   .legend i { width: 11px; height: 11px; }
   .bar-row { grid-template-columns: 78px 1fr 62px; }
 }
+
+/* coordinates */
+.coord { margin: 8px 0; font-size: 13px; }
+.coord .clabel { font-weight: 600; }
+.coord .cval, .cutm, .mono { font-family: ui-monospace, Consolas, monospace; }
+.coord .cutm { color: #555; font-size: 12px; margin-top: 2px; }
+button.copy { font: inherit; font-size: 11px; padding: 1px 7px; border: 1px solid #889; border-radius: 4px; background: #f4f6fa; cursor: pointer; }
+button.copy:hover { background: #e6ebf5; }
+.cursor-readout { background: rgba(255,255,255,.92); padding: 3px 8px; border-radius: 4px; font: 11px ui-monospace, Consolas, monospace; box-shadow: 0 0 4px rgba(0,0,0,.3); color: #111; }
+.meta.mono { font-family: ui-monospace, Consolas, monospace; font-size: 11.5px; }
+@media (prefers-color-scheme: dark) {
+  .coord .cutm { color: #aab; }
+  button.copy { background: #2a2f3a; color: inherit; border-color: #667; }
+}

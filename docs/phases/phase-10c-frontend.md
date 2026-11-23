@@ -76,3 +76,21 @@ Then open http://127.0.0.1:8000/ (the API docs stay at /docs).
 
 ## 11. Dated note on what was not checked by hand (2026-11-21)
 Acceptance check 3 listed "tiers toggle". I did not click the layer toggles in the browser; they are standard Leaflet layer-group switches and were not covered by an automated test. The other items in check 3 and check 4 were exercised as described in section 6.
+
+## Addendum 2026-11-23: coordinates and units (owner review findings)
+Owner review found two real gaps and one point needing context.
+1. **Coordinates were not shown** for areas of interest (only after clicking a point). Now: area cards and popups show the peak cell and
+   centre as latitude, longitude (5 decimals) and UTM zone 13N easting/northing with a Copy button; the point panel shows the cell centre the
+   same way; a live cursor readout shows latitude, longitude and UTM. The JS UTM conversion was checked against pyproj on 5 points (difference
+   0.0000 m).
+2. **Units:** the survey grids are counts per second (cps), correctly labelled, but geologists expect eU/eTh in ppm and eK in %. The page and
+   the evidence text now show cps with an approximate ppm / % value (sensitivities U 10.4 cps/ppm, Th 6.2 cps/ppm, K 99.5 cps/%, report
+   Table 6-16) and a U/Th ratio on a ppm basis, with a plain note that these are rough conversions, not calibrated concentrations. The calibrated
+   ppm/% channels exist only in the original .gdb databases and were not used.
+3. **"Best site because eU and eTh are high":** not accepted as a conclusion. High Th with high U usually means radioelement-rich rock (for
+   example granite, a possible source rock); enrichment of U over Th is the more interesting signal (typical crustal U/Th about 0.27). The
+   top areas by this model sit near 0.3 on the ppm basis, i.e. ordinary for their rock; the model ranks resemblance to known occurrences,
+   not best sites. No change to the model.
+Tests: 67 pass (new: constants in `web/app.js` match `serve.py`; reading text shows ppm and %; real evidence conversion is consistent).
+Checked in a local browser: coordinates, copy button, cursor readout, area cards, ppm/% lines render. Not yet redeployed to Cloud Run.
+Not done: ppm/% from the real .gdb channels; UTM shown only for zone 13N (the whole survey lies in it).

@@ -32,6 +32,14 @@ def _survey_pct(q: list, v: float) -> float:
     return float(np.searchsorted(np.asarray(q), v, side="right") / (len(q) - 1))
 
 
+# Approximate concentration from counts per second, using the contractor report's sensitivities (Table 6-16, see
+# docs/phases/phase-03-raw-validation-eda.md). The survey grids are cps; the ppm / % channels exist only in the .gdb files.
+# These are rough conversions for orientation, not calibrated concentrations. Keep in step with SENS in web/app.js.
+SENS_U_CPS_PER_PPM = 10.4
+SENS_TH_CPS_PER_PPM = 6.2
+SENS_K_CPS_PER_PCT = 99.5
+
+
 class Store:
     def __init__(self, model_dir: Path):
         model_dir = Path(model_dir)
@@ -115,6 +123,11 @@ class Store:
         return {
             "eU_cps": round(eu, 1), "eTh_cps": round(eth, 1), "eK_cps": round(g("eK"), 1),
             "mean_eU_5km_cps": round(g("nbr_U_5km"), 1), "u_over_th": round(ratio, 2),
+            "approx_concentration": {
+                "eU_ppm": round(eu / SENS_U_CPS_PER_PPM, 1), "eTh_ppm": round(eth / SENS_TH_CPS_PER_PPM, 1),
+                "eK_pct": round(g("eK") / SENS_K_CPS_PER_PCT, 2),
+                "u_over_th_ppm": round((eu / SENS_U_CPS_PER_PPM) / max(eth / SENS_TH_CPS_PER_PPM, 0.1), 2),
+                "note": "approximate: counts per second divided by the survey sensitivities; crustal averages are about 2.7 ppm U, 10 ppm Th, 2.3 % K, U/Th about 0.27"},
             "distance_to_fault_km": round(g("fault_km"), 2), "elevation_m": round(g("elev_m")),
             "rock_class": hot.get("class_names", {}).get(str(int(self.ev["gclass"][i])), "unknown"),
             "rock_unit": hot.get("unit_names", {}).get(str(int(self.ev["unit"][i])), "unknown"),
@@ -144,12 +157,13 @@ class Store:
         if ev:
             sp = ev["survey_percentile"]
             out.append({"kind": "measured", "title": "Uranium",
-                        "text": f"eU is {ev['eU_cps']} cps here, higher than {sp['eU']:.0%} of the survey "
+                        "text": f"eU is {ev['eU_cps']} cps (about {ev['approx_concentration']['eU_ppm']} ppm) here, higher than {sp['eU']:.0%} of the survey "
                                 f"(median {ev['survey_median']['eU']:.1f}). The 5 km average is {ev['mean_eU_5km_cps']} cps "
                                 f"({sp['mean_eU_5km']:.0%} of the survey)."})
             out.append({"kind": "measured", "title": "Thorium, potassium and ratio",
-                        "text": f"eTh {ev['eTh_cps']} cps ({sp['eTh']:.0%}), eK {ev['eK_cps']} cps ({sp['eK']:.0%}); "
-                                f"U/Th ratio {ev['u_over_th']} (survey median {ev['survey_median']['u_over_th']:.2f}; "
+                        "text": f"eTh {ev['eTh_cps']} cps (about {ev['approx_concentration']['eTh_ppm']} ppm; {sp['eTh']:.0%}), "
+                                f"eK {ev['eK_cps']} cps (about {ev['approx_concentration']['eK_pct']} %; {sp['eK']:.0%}); "
+                                f"U/Th ratio {ev['u_over_th']} in cps, about {ev['approx_concentration']['u_over_th_ppm']} in ppm terms (survey median {ev['survey_median']['u_over_th']:.2f}; "
                                 f"above {sp['u_over_th']:.0%} of cells)."})
             out.append({"kind": "measured", "title": "Setting",
                         "text": f"{ev['rock_class']}; unit: {ev['rock_unit']}. Nearest mapped fault {ev['distance_to_fault_km']} km away; "
