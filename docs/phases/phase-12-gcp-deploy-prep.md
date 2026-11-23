@@ -41,3 +41,6 @@ Memory: the model files total about 97 MB in RAM plus Python; 1 GiB is a guess t
 - Not checked: the page rendered in a browser against the live URL (Leaflet and tiles load from the internet); memory use under load.
 - Trial ends 17 December 2026; the service stops then unless the account is upgraded.
 - Teardown: `gcloud run services delete mpm-serve --region us-central1` and `gcloud artifacts repositories delete mpm --location us-central1`.
+
+## Redeploy 2026-11-23 (frontend coordinates and units)
+Revision `mpm-serve-00002-2jl`, image tag `phase12b` (built locally, pushed to Artifact Registry), same settings (max 2 instances, public). Live checks: `/health` ok, `/app.js` contains the new UTM code, `/predict/point` returns the same percentile (0.665) plus `approx_concentration`, `/areas` 200. Not checked: the live page rendered in a browser (checked only on a local server).
